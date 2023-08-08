@@ -9,6 +9,7 @@ public class PlayerAnimations : MonoBehaviour, IAnimatePlayer
     [SerializeField] private float jumpDuration;
     [SerializeField] private float fallAcceleration;
     [Space] [SerializeField] private AnimationClip playerJump, playerRun, playerDie;
+
     private const int JumpNum = 1;
     private Animator _playerAnimator;
 
