@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace EventBus
 {
-    public class EventBus : MonoBehaviour
+    public class EventBus
     {
-        private Dictionary<string, List<CallbackWithPriority>> _signalCallbacks = new Dictionary<string, List<CallbackWithPriority>>();
+        private Dictionary<string, List<CallbackWithPriority>> _signalCallbacks =
+            new Dictionary<string, List<CallbackWithPriority>>();
 
         public void Subscribe<T>(Action<T> callback, int priority)
         {
@@ -18,9 +19,9 @@ namespace EventBus
             }
             else
             {
-                _signalCallbacks.Add(key, new List<CallbackWithPriority>() { new (priority, callback) });
+                _signalCallbacks.Add(key, new List<CallbackWithPriority>() { new(priority, callback) });
             }
-            
+
             _signalCallbacks[key] = _signalCallbacks[key].OrderByDescending(x => x.Priority).ToList();
         }
 
