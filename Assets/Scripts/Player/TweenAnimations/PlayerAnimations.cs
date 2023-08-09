@@ -39,7 +39,6 @@ public class PlayerAnimations : MonoBehaviour, IAnimatePlayer
                 break;
             case PlayerState.Jump:
                 SetJumpAnimation();
-                print(123);
                 break;
             case PlayerState.Run:
                 SetRunAnimation();
