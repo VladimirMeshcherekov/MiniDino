@@ -7,20 +7,31 @@ namespace Player
 {
     public class PlayerJump : MonoBehaviour
     {
-        EventBus.EventBus EventBus;
-        private IAnimatePlayer _animatePlayer;
-
+        private EventBus.EventBus _eventBus;
+        private bool _canPlayerJump;
+        
         [Inject]
-        void Construct(EventBus.EventBus eventBus, IAnimatePlayer animatePlayer)
+        public void Construct(EventBus.EventBus eventBus, IAnimatePlayer animatePlayer)
         {
-            EventBus = eventBus;
-            EventBus.Subscribe<PlayerJumpSignal>(Jump, 0);
-            _animatePlayer = animatePlayer;
+            _eventBus = eventBus;
+            _eventBus.Subscribe<PlayerInputJumpSignal>(Jump, 0);
+            _eventBus.Subscribe<ChangePlayerStateSignal>(PlayerStateChanged, 0);
+        }
+        
+        private void Jump(PlayerInputJumpSignal signal)
+        {
+            if (_canPlayerJump == false) return;
+            
+            _eventBus.Invoke(new ChangePlayerStateSignal(PlayerState.Jump));
+            _canPlayerJump = false;
         }
 
-        void Jump(PlayerJumpSignal signal)
+        private void PlayerStateChanged(ChangePlayerStateSignal newState)
         {
-          _animatePlayer.SetJumpAnimation();
+            if (newState.State == PlayerState.Run)
+            {
+                _canPlayerJump = true;
+            }
         }
     }
 }

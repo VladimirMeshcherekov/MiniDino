@@ -1,5 +1,5 @@
-﻿using Markers;
-using Player.Interfaces;
+﻿using EventBus.Signals;
+using Markers;
 using UnityEngine;
 using Zenject;
 
@@ -7,19 +7,19 @@ namespace Player
 {
     public class PlayerRun : MonoBehaviour
     {
-        private IAnimatePlayer _animatePlayer;
+      private EventBus.EventBus _eventBus;
         
         [Inject]
-        private void Construct(IAnimatePlayer animatePlayer)
+        private void Construct(EventBus.EventBus eventBus)
         {
-            _animatePlayer = animatePlayer;
+            _eventBus = eventBus;
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.TryGetComponent(out Ground ground))
             {
-                _animatePlayer.SetRunAnimation();
+              _eventBus.Invoke(new ChangePlayerStateSignal(PlayerState.Run));
             }
         }
     }

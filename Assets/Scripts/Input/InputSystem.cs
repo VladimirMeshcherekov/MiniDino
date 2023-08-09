@@ -19,7 +19,7 @@ namespace Input
         }
         void Jump()
         {
-            _eventBus.Invoke(new PlayerJumpSignal());
+            _eventBus.Invoke(new PlayerInputJumpSignal());
         }
     }
 }
