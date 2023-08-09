@@ -1,4 +1,5 @@
 using EventBus.Signals;
+using Player.Interfaces;
 using UnityEngine;
 using Zenject;
 
@@ -6,15 +7,31 @@ namespace Player
 {
     public class PlayerJump : MonoBehaviour
     {
-        [Inject] EventBus.EventBus EventBus;
-        void Start()
+        private EventBus.EventBus _eventBus;
+        private bool _canPlayerJump;
+        
+        [Inject]
+        public void Construct(EventBus.EventBus eventBus, IAnimatePlayer animatePlayer)
         {
-            EventBus.Subscribe<PlayerJumpSignal>(Jump, 0);
+            _eventBus = eventBus;
+            _eventBus.Subscribe<PlayerInputJumpSignal>(Jump, 0);
+            _eventBus.Subscribe<ChangePlayerStateSignal>(PlayerStateChanged, 0);
         }
         
-        void Jump(PlayerJumpSignal signal)
+        private void Jump(PlayerInputJumpSignal signal)
         {
-            print("jump");
+            if (_canPlayerJump == false) return;
+            
+            _eventBus.Invoke(new ChangePlayerStateSignal(PlayerState.Jump));
+            _canPlayerJump = false;
+        }
+
+        private void PlayerStateChanged(ChangePlayerStateSignal newState)
+        {
+            if (newState.State == PlayerState.Run)
+            {
+                _canPlayerJump = true;
+            }
         }
     }
 }
