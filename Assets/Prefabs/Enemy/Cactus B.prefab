@@ -147,7 +147,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9dbefdc3a32e4eb45b8fa4bb2db74105, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3
 --- !u!1 &6021327502957201779
 GameObject:
   m_ObjectHideFlags: 0
@@ -193,7 +193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14cf650e00ec0214a87ec072931f544d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreToAdd: 1
+  scoreValue: 1
 --- !u!61 &7239266207204295232
 BoxCollider2D:
   m_ObjectHideFlags: 0

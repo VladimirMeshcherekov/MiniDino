@@ -36,7 +36,7 @@ namespace Player
 
             if (enteredCollider.gameObject.TryGetComponent(out AddScore addScore) && !_isPlayerDied)
             {
-                print(addScore.scoreToAdd);
+              _eventBus.Invoke(new AddScoreToPlayerSignal(addScore.scoreValue));
             }
         }
 

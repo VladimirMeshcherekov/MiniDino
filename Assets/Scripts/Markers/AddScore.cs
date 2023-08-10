@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AddScore : MonoBehaviour
 {
-    public int scoreToAdd;
+    public int scoreValue;
 
     private void OnValidate()
     {
-        if (scoreToAdd < 0)
+        if (scoreValue < 0)
         {
-            scoreToAdd = 0;
+            scoreValue = 0;
         }
     }
 }

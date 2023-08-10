@@ -19,12 +19,18 @@ namespace Player.Score
        {
            _eventBus = eventBus;
            _eventBus.Subscribe<AddScoreToPlayerSignal>(AddScoreToPlayer, 0);
+           ReloadUICurrentScoreText();
        }
 
        private void AddScoreToPlayer(AddScoreToPlayerSignal signal)
        {
-           _currentScore++;
-           currentScoreText.text = _currentScore.ToString();
+           _currentScore += signal.ScoreValue;
+           ReloadUICurrentScoreText();
+       }
+
+       private void ReloadUICurrentScoreText()
+       {
+            currentScoreText.text = _currentScore.ToString();
        }
     }
 }
