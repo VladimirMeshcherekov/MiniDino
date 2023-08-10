@@ -1,4 +1,5 @@
-﻿using Enemy;
+﻿using System;
+using Enemy;
 using EventBus.Signals;
 using Markers;
 using UnityEngine;
@@ -18,16 +19,24 @@ namespace Player
             _eventBus.Subscribe<ChangePlayerStateSignal>(PlayerDied, 0);
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnCollisionEnter2D(Collision2D enteredCollider)
         {
-            if (other.gameObject.TryGetComponent(out Ground ground) && !_isPlayerDied)
+            if (enteredCollider.gameObject.TryGetComponent(out Ground ground) && !_isPlayerDied)
             {
                 _eventBus.Invoke(new ChangePlayerStateSignal(PlayerState.Run));
             }
+        }
 
-            if (other.gameObject.TryGetComponent(out EnemyMove enemy))
+        private void OnTriggerEnter2D(Collider2D enteredCollider)
+        {
+            if (enteredCollider.gameObject.TryGetComponent(out EnemyMove enemy))
             {
                 _eventBus.Invoke(new ChangePlayerStateSignal(PlayerState.Die));
+            }
+
+            if (enteredCollider.gameObject.TryGetComponent(out AddScore addScore) && !_isPlayerDied)
+            {
+                print(addScore.scoreToAdd);
             }
         }
 
