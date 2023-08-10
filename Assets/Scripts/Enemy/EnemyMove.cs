@@ -6,18 +6,19 @@ namespace Enemy
     public class EnemyMove : MonoBehaviour
     {
         [SerializeField] private float speed;
+        
         private Vector2 _moveDirection;
         private Rigidbody2D _rigidbody2D;
         private float _minimumCameraViewPositionX;
 
-        void Start()
+        private void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _moveDirection = Vector2.left;
             _minimumCameraViewPositionX = Camera.main.ScreenToWorldPoint(Vector3.zero).x;
         }
 
-        void Update()
+        public void FixedUpdate()
         {
             _rigidbody2D.velocity = _moveDirection * speed;
             if (_minimumCameraViewPositionX >= transform.position.x + transform.localScale.x)
@@ -29,6 +30,11 @@ namespace Enemy
         private void ResetObject()
         {
             gameObject.SetActive(false);
+        }
+
+        public void DisableEnemyMove()
+        {
+            speed = 0;
         }
     }
 }

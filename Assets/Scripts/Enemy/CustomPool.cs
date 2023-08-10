@@ -8,7 +8,7 @@ namespace Enemy
     public class CustomPool<T> where T : MonoBehaviour
     {
         private List<T> _prefabs;
-        private List<T> _objects;
+        public List<T> _objects;
         private Transform _parentContainer;
 
         public CustomPool(List<T> prefabs, int prewarmObjects, Transform parentContainer)
