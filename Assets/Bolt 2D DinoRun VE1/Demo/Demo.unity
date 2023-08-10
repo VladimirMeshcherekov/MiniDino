@@ -339,6 +339,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentScoreText: {fileID: 12275322}
   bestScoreText: {fileID: 414379885}
+  textBeforeCurrentScore: 'Current: '
+  textBeforeBestScore: 'Best: '
 --- !u!4 &29725481
 Transform:
   m_ObjectHideFlags: 0

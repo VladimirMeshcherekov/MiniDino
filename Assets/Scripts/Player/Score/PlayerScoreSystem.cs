@@ -7,30 +7,45 @@ namespace Player.Score
 {
     public class PlayerScoreSystem : MonoBehaviour
     {
-       [SerializeField] private TMP_Text currentScoreText;
-       [SerializeField] private TMP_Text bestScoreText;
+        [SerializeField] private TMP_Text currentScoreText;
+        [SerializeField] private TMP_Text bestScoreText;
 
-       private int _currentScore;
-       
-       private EventBus.EventBus _eventBus;
-       
-       [Inject]
-       private void Construct(EventBus.EventBus eventBus)
-       {
-           _eventBus = eventBus;
-           _eventBus.Subscribe<AddScoreToPlayerSignal>(AddScoreToPlayer, 0);
-           ReloadUICurrentScoreText();
-       }
+        [SerializeField] private string textBeforeCurrentScore;
+        [SerializeField] private string textBeforeBestScore;
+        
+        private int _currentScore;
+        private EventBus.EventBus _eventBus;
+        private PlayerBestScore _playerBestScore;
 
-       private void AddScoreToPlayer(AddScoreToPlayerSignal signal)
-       {
-           _currentScore += signal.ScoreValue;
-           ReloadUICurrentScoreText();
-       }
+        [Inject]
+        private void Construct(EventBus.EventBus eventBus)
+        {
+            _eventBus = eventBus;
+            _eventBus.Subscribe<AddScoreToPlayerSignal>(AddScoreToPlayer, 0);
+            _playerBestScore = new PlayerBestScore();
+            ReloadCurrentScoreTextUI();
+            ReloadBestScoreTextUI();
+        }
 
-       private void ReloadUICurrentScoreText()
-       {
-            currentScoreText.text = _currentScore.ToString();
-       }
+        private void AddScoreToPlayer(AddScoreToPlayerSignal signal)
+        {
+            _currentScore += signal.ScoreValue;
+            ReloadCurrentScoreTextUI();
+            if (_currentScore > _playerBestScore.BestScoreValue)
+            {
+                _playerBestScore.SetNewBestScore(_currentScore);
+                ReloadBestScoreTextUI();
+            }
+        }
+
+        private void ReloadCurrentScoreTextUI()
+        {
+            currentScoreText.text = textBeforeCurrentScore + _currentScore.ToString();
+        }
+
+        private void ReloadBestScoreTextUI()
+        {
+            bestScoreText.text = textBeforeBestScore + _playerBestScore.BestScoreValue.ToString();
+        }
     }
 }
