@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using EventBus.Signals;
 using Player;
+using Player.Pause.Interfaces;
 using Timers;
 using UnityEngine;
 using Zenject;
 
 namespace Enemy
 {
-    public class EnemySpawner : MonoBehaviour
+    public class EnemySpawner : MonoBehaviour, ICustomPauseBehavior
     {
         [SerializeField] private List<EnemyMove> enemyPrefabs;
         [SerializeField] private Transform spawnPoint;
@@ -16,11 +17,15 @@ namespace Enemy
         private CustomPool<EnemyMove> _pool;
         private AsyncTimer _timerToSpawn;
         private EventBus.EventBus _eventBus;
+        private IPauseHandler _customPauseManager;
         
         [Inject]
-        private void Construct(EventBus.EventBus eventBus)
+        private void Construct(EventBus.EventBus eventBus, IPauseHandler customPauseManager)
         {
             _eventBus = eventBus;
+
+            _customPauseManager = customPauseManager;
+            _customPauseManager.AddPausedBehaviorObject(this);
         }
         
         void Start()
@@ -49,6 +54,23 @@ namespace Enemy
                 }
             }
         }
-        
+
+        public void SetPaused(bool isPaused)
+        {
+            switch (isPaused)
+            {
+                case true:
+                    _timerToSpawn.StopTimer();
+                    break;
+                case false:
+                   _timerToSpawn.StartTimer();
+                    break;
+            }
+            
+            foreach (var currentObj in _pool._objects)
+            {
+                currentObj.SetPaused(isPaused);
+            }
+        }
     }
 }
