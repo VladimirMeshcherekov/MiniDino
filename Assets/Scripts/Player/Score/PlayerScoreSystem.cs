@@ -1,4 +1,5 @@
-﻿using EventBus.Signals;
+﻿using System;
+using EventBus.Signals;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -12,7 +13,7 @@ namespace Player.Score
 
         [SerializeField] private string textBeforeCurrentScore;
         [SerializeField] private string textBeforeBestScore;
-        
+
         private int _currentScore;
         private EventBus.EventBus _eventBus;
         private PlayerBestScore _playerBestScore;
@@ -23,6 +24,10 @@ namespace Player.Score
             _eventBus = eventBus;
             _eventBus.Subscribe<AddScoreToPlayerSignal>(AddScoreToPlayer, 0);
             _playerBestScore = new PlayerBestScore();
+        }
+
+        private void Awake()
+        {
             ReloadCurrentScoreTextUI();
             ReloadBestScoreTextUI();
         }
