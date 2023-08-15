@@ -7,7 +7,7 @@ namespace Timers
     {
         private readonly Action _action;
         private readonly int _tickDelayInMilliseconds;
-        private bool _autoRepeat;
+        private readonly bool _autoRepeat;
         private bool _isTimerWorking;
 
         public AsyncTimer(Action action, int tickDelayInMilliseconds, bool autoRepeat)
@@ -15,12 +15,13 @@ namespace Timers
             _action = action;
             _tickDelayInMilliseconds = tickDelayInMilliseconds;
             _autoRepeat = autoRepeat;
+            _isTimerWorking = false;
+            TimerTick();
         }
 
         public void StartTimer()
         {
             _isTimerWorking = true;
-            TimerTick();
         }
 
         private async void TimerTick()

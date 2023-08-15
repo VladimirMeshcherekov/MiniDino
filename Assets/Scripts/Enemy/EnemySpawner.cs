@@ -63,7 +63,7 @@ namespace Enemy
                     _timerToSpawn.StopTimer();
                     break;
                 case false:
-                   _timerToSpawn.StartTimer();
+                    _timerToSpawn.StartTimer();
                     break;
             }
             
